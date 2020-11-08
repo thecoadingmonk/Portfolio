@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import "../../App.css";
-import useColorModeChange from "../../hooks/useColorModeChange";
 import gsap from "gsap";
+import useDarkMode from '../../hooks/useDarkMode';
 
 export interface HomeProps {
   isMenuOpen: boolean;
@@ -10,9 +10,12 @@ export interface HomeProps {
 }
 
 const Home = ({ isMenuClicked, isMenuOpen }: HomeProps) => {
-  const isDarkMode = useColorModeChange();
+  const isDarkMode = useDarkMode();
+  const [isLightMode, setIsLightMode] = useState(!isDarkMode);
 
   useEffect(() => {
+    
+
     if (isMenuOpen) {
       gsap.to(".burger-top", {
         rotation: 45,
@@ -34,13 +37,40 @@ const Home = ({ isMenuClicked, isMenuOpen }: HomeProps) => {
         width: 28,
       });
     }
+    
+  }, [isMenuOpen]);
+
+  useEffect(() => {
 
     if (isDarkMode) {
       gsap.to("g.toggle", { x: 43 });
     } else {
       gsap.to("g.toggle", { x: 19 });
     }
-  }, [isMenuOpen, isDarkMode]);
+
+    wipeScreen();
+  },[isDarkMode])
+
+  const wipeScreen = () => {
+    const timeline = gsap.timeline();
+    const bodyTag = document.querySelector("body");
+     
+    if (isLightMode) {
+      gsap.to("g.toggle", { x: 43 });
+      setIsLightMode(false);
+
+    } else {
+      gsap.to("g.toggle", { x: 19 });
+      setIsLightMode(true);
+    }
+
+      timeline.set("div.wipe", {height: "0%", top: "0%"})
+      .to("div.wipe", {height: "100%" })
+      .add(() => {
+         bodyTag?.classList.toggle("dark-mode");
+      })
+      .to("div.wipe", {height: "0%", top: "100%"});
+  }
 
   return (
     <section>
@@ -63,7 +93,7 @@ const Home = ({ isMenuClicked, isMenuOpen }: HomeProps) => {
         </svg>
         Samartha Hegde
       </h1>
-      <a href="#" className="dark-mode-toggle">
+      <a href="#" className="dark-mode-toggle" onClick={() => wipeScreen()}>
         <svg
           width="64"
           height="40"
@@ -123,6 +153,7 @@ const Home = ({ isMenuClicked, isMenuOpen }: HomeProps) => {
           />
         </svg>
       </a>
+      <div className="wipe"></div>
     </section>
   );
 };
