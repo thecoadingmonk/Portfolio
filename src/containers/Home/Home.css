@@ -1,0 +1,60 @@
+h1 {
+  position: fixed;
+  top: 32px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+}
+
+h1 rect {
+  fill: var(--highlight-color);
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--highlight-color);
+}
+
+a.dark-mode-toggle {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+}
+
+a.dark-mode-toggle circle {
+  fill: currentColor;
+}
+
+a.dark-mode-toggle rect {
+  stroke: currentColor;
+}
+
+a.menu-toggle {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+a.menu-toggle rect {
+  fill: currentColor;
+}
+
+svg {
+  vertical-align: middle;
+}
+
+a.dark-mode-toggle g.toggle circle {
+  transition: transform 0.5s;
+}
+a.dark-mode-toggle:hover g.toggle circle {
+  transform: scale(1.75);
+}
