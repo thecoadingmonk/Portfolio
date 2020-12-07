@@ -14,11 +14,12 @@ const Navigator = ({ isOpen }: NavigatorProps) => {
         <div className="internal">
           <a href="#">About</a>
           <a href="#">Blog</a>
-          <a href="#">Investments</a>
+          <a href="#">Projects</a>
         </div>
         <div className="external">
+          <a href="#">Github</a>
           <a href="#">Instagram</a>
-          <a href="#">Crunchbase</a>
+          <a href="#">Facebook</a>
           <a href="#">Twitter</a>
         </div>
       </nav>

@@ -14,6 +14,66 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 4;
+}
+
+@media screen and (max-width: 480px) {
+  nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 90%;
+    height: 100vh;
+    background-color: var(--main-color);
+
+    transform: translate(100%, 0);
+    transition: transform 0.5s 0s;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 4;
+  }
+
+  nav div.internal {
+    font-size: 24px;
+    line-height: 32px;
+    flex: 1;
+  }
+
+  nav div.external {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 90%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: var(--main-color);
+
+    transform: translate(100%, 0);
+    transition: transform 0.5s 0s;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 4;
+  }
+
+  nav div.internal {
+    font-size: 36px;
+    line-height: 48px;
+    flex: 1;
+  }
+
+  nav div.external {
+    margin-bottom: 36px;
+  }
 }
 
 .nav-open {

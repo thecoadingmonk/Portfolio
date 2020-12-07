@@ -1,0 +1,35 @@
+.container {
+    width: 300px;
+    border-radius: 10px;
+    position: fixed;
+    top: 16px;
+    right: 180px;
+}
+
+.inner {
+    background: var(--highlight-color);
+    padding: 1em;
+    border-radius: 10px;
+    width: 250px;
+    clip-path: circle(8% at 90% 20%);
+    transition: clip-path .5s ease-in-out;
+    cursor: pointer;
+    color: white;
+}
+
+.inner:hover {
+    clip-path: circle(75%);
+}
+
+.inner:hover span {
+    opacity: 0;
+}
+
+.container .inner span {
+    float: right;
+    font-weight: bold;
+    position: relative;
+    margin-right: 1%;
+    transition: opacity .2s ease-in-out;
+    font-size: 0.8em;
+}

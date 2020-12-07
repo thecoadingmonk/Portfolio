@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import "./Home.css";
-import "../../App.css";
-import gsap from "gsap";
-import useDarkMode from '../../hooks/useDarkMode';
+import React, { useEffect, useRef } from 'react';
+import './Home.css';
+import '../../App.css';
+import gsap from 'gsap';
+import useDarkModeToggle from '../../hooks/useDarkModeToggle';
 
 export interface HomeProps {
   isMenuOpen: boolean;
@@ -10,150 +10,141 @@ export interface HomeProps {
 }
 
 const Home = ({ isMenuClicked, isMenuOpen }: HomeProps) => {
-  const isDarkMode = useDarkMode();
-  const [isLightMode, setIsLightMode] = useState(!isDarkMode);
+  const [isDarkMode, setIsDarkMode] = useDarkModeToggle();
+
+  const burgerTopRef = useRef(null);
+  const burgerBottomRef = useRef(null);
+  const burgerMiddleRef = useRef(null);
+  const toggleRef = useRef(null);
+  const wipeRef = useRef(null);
 
   useEffect(() => {
-    
-
     if (isMenuOpen) {
-      gsap.to(".burger-top", {
+      gsap.to(burgerTopRef.current, {
         rotation: 45,
-        transformOrigin: "50% 50%",
+        transformOrigin: '50% 50%',
         y: 8,
       });
-      gsap.to(".burger-bottom", {
+      gsap.to(burgerBottomRef.current, {
         rotation: -45,
-        transformOrigin: "50% 50%",
+        transformOrigin: '50% 50%',
         y: -8,
       });
-      gsap.to(".burger-middle", {
+      gsap.to(burgerMiddleRef.current, {
         width: 0,
       });
     } else {
-      gsap.to(".burger-top", { rotation: 0, y: 0 });
-      gsap.to(".burger-bottom", { rotation: 0, y: 0 });
-      gsap.to(".burger-middle", {
+      gsap.to(burgerTopRef.current, { rotation: 0, y: 0 });
+      gsap.to(burgerBottomRef.current, { rotation: 0, y: 0 });
+      gsap.to(burgerMiddleRef.current, {
         width: 28,
       });
     }
-    
   }, [isMenuOpen]);
 
   useEffect(() => {
-
     if (isDarkMode) {
-      gsap.to("g.toggle", { x: 43 });
-    } else {
-      gsap.to("g.toggle", { x: 19 });
+      const bodyTag = document.querySelector('body');
+      bodyTag?.classList.toggle('dark-mode');
     }
-
-    wipeScreen();
-  },[isDarkMode])
+  }, []);
 
   const wipeScreen = () => {
     const timeline = gsap.timeline();
-    const bodyTag = document.querySelector("body");
-     
-    if (isLightMode) {
-      gsap.to("g.toggle", { x: 43 });
-      setIsLightMode(false);
+    const bodyTag = document.querySelector('body');
 
+    if (isDarkMode) {
+      timeline.to(toggleRef.current, { x: 43 });
     } else {
-      gsap.to("g.toggle", { x: 19 });
-      setIsLightMode(true);
+      timeline.to(toggleRef.current, { x: 19 });
     }
+    setIsDarkMode(!isDarkMode);
 
-      timeline.set("div.wipe", {height: "0%", top: "0%"})
-      .to("div.wipe", {height: "100%" })
+    timeline
+      .set(wipeRef.current, { height: '0%', top: '0%' })
+      .to(wipeRef.current, { height: '100%' })
       .add(() => {
-         bodyTag?.classList.toggle("dark-mode");
+        bodyTag?.classList.toggle('dark-mode');
       })
-      .to("div.wipe", {height: "0%", top: "100%"});
-  }
+      .to(wipeRef.current, { height: '0%', top: '100%' });
+  };
 
   return (
     <section>
-      <h1>
+      <div className='header'>
+        <img
+          className='avatar'
+          src={require('../../assets/profile_pic.jpg')}
+        ></img>
+        <div className='title'>
+          <h1>
+            <span>S</span>AMARTHA <span>H</span>EGDE
+          </h1>
+          <span className='designation'>Front-end developer @OSlash.</span>
+        </div>
+      </div>
+      <a href='#' className='dark-mode-toggle' onClick={() => wipeScreen()}>
         <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          width='64'
+          height='40'
+          viewBox='0 0 64 40'
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
         >
           <rect
-            x="11.5146"
-            y="5.30304"
-            width="24"
-            height="24"
-            transform="rotate(15 11.5146 5.30304)"
-            fill="#C4C4C4"
+            x='8'
+            y='9'
+            width='46'
+            height='22'
+            rx='11'
+            stroke='black'
+            strokeWidth='2'
           />
-        </svg>
-        Samartha Hegde
-      </h1>
-      <a href="#" className="dark-mode-toggle" onClick={() => wipeScreen()}>
-        <svg
-          width="64"
-          height="40"
-          viewBox="0 0 64 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="8"
-            y="9"
-            width="46"
-            height="22"
-            rx="11"
-            stroke="black"
-            stroke-width="2"
-          />
-          <circle cx="19" cy="20" r="6" fill="black" fill-opacity="0.5" />
-          <g transform="translate(19, 20)" className="toggle">
-            <circle cx="0" cy="0" r="6" fill="black" />
+          <circle cx='19' cy='20' r='6' fill='black' fillOpacity='0.5' />
+          <g transform='translate(19, 20)' className='toggle' ref={toggleRef}>
+            <circle cx='0' cy='0' r='6' fill='black' />
           </g>
-          <circle cx="43" cy="20" r="6" fill="black" fill-opacity="0.5" />
+          <circle cx='43' cy='20' r='6' fill='black' fillOpacity='0.5' />
         </svg>
-        <span>{isDarkMode ? "Light mode" : "Dark mode"}</span>
       </a>
-      <a href="#" className="menu-toggle" onClick={() => isMenuClicked(true)}>
-        <span> {isMenuOpen ? "Close" : "Menu"}</span>
+      <a href='#' className='menu-toggle' onClick={() => isMenuClicked(true)}>
         <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          width='40'
+          height='40'
+          viewBox='0 0 40 40'
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
         >
           <rect
-            x="6"
-            y="10"
-            width="28"
-            height="4"
-            fill="black"
-            className="burger-top"
+            x='6'
+            y='10'
+            width='28'
+            height='4'
+            fill='black'
+            className='burger-top'
+            ref={burgerTopRef}
           />
           <rect
-            x="6"
-            y="18"
-            width="28"
-            height="4"
-            fill="black"
-            className="burger-middle"
+            x='6'
+            y='18'
+            width='28'
+            height='4'
+            fill='black'
+            className='burger-middle'
+            ref={burgerMiddleRef}
           />
           <rect
-            x="6"
-            y="26"
-            width="28"
-            height="4"
-            fill="black"
-            className="burger-bottom"
+            x='6'
+            y='26'
+            width='28'
+            height='4'
+            fill='black'
+            className='burger-bottom'
+            ref={burgerBottomRef}
           />
         </svg>
       </a>
-      <div className="wipe"></div>
+      <div className='wipe' ref={wipeRef}></div>
     </section>
   );
 };

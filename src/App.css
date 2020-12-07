@@ -1,25 +1,37 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
 :root {
-  --main-color: #ffffff;
+  --main-color: #e1e4e8;
   --text-color: #000000;
   --highlight-color: #2727e6;
+  --wave-color: #9e9e9e;
+  --letter-highlight: orangered;
 }
 
 .dark-mode {
   --main-color: #000000;
   --text-color: #ffffff;
   --highlight-color: #ff4141;
+  --wave-color: #363d49;
+  --letter-highlight: orangered;
 }
 
 body {
   font-family: Inter;
   font-size: 24px;
-  line-height: 40px;
-
   background-color: var(--main-color);
+  color: var(--text-color);
+}
+
+.main {
   background-image: url(./assets/grid.svg);
   background-position: center center;
 
-  color: var(--text-color);
+  height: 100vh;
+  transform: translate(0, 0);
+  transition: transform 0.5s;
+}
+
+.move-body {
+  transform: translate(-100px, 0);
 }
